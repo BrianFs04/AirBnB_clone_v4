@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
   });
+
   $.ajax({
     type: 'POST',
     url: 'http://localhost:5001/api/v1/places_search/',
@@ -58,5 +59,39 @@ document.addEventListener('DOMContentLoaded', function () {
         $('SECTION.places').append(cont);
       }
     }
+  });
+
+  $('BUTTON').click(function () {
+    $.ajax({
+      type: 'POST',
+      url: 'http://localhost:5001/api/v1/places_search/',
+      data: JSON.stringify({ amenities: ameIds }),
+      contentType: 'application/json',
+      success: function (data) {
+        $('SECTION.places').empty();
+        console.log(data);
+        let numberBaths; let numberGuests; let numberRooms = '';
+        for (const place of data) {
+          numberBaths = (`${place.number_bathrooms}` > 1 ? 'Bathrooms' : 'Bathroom');
+          numberGuests = (`${place.max_guest}` > 1 ? 'Guests' : 'Guest');
+          numberRooms = (`${place.number_rooms}` > 1 ? 'Rooms' : 'Room');
+          const cont = `<article>
+            <div class="title_box">
+            <h2>${place.name}</h2>
+            <div class="price_by_night">$${place.price_by_night}</div>
+            </div>
+            <div class="information">
+            <div class="max_guest">${place.max_guest} ${numberGuests}</div>
+            <div class="number_rooms">${place.number_rooms} ${numberRooms}</div>
+            <div class="number_bathrooms">${place.number_bathrooms} ${numberBaths}</div>
+            </div>
+            <div class="description">
+            ${place.description};
+          </div>
+            </article>`;
+          $('SECTION.places').append(cont);
+        }
+      }
+    });
   });
 });
