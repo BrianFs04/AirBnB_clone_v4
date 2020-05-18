@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
       for (let i = 0; i < ameIds.length; i++) {
         if (ameIds[i] === findId) {
           ameIds.splice(i, 1);
-	  ameNames.splice(i, 1);
+          ameNames.splice(i, 1);
         }
       }
     }
